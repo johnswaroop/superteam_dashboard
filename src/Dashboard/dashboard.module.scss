@@ -1,0 +1,368 @@
+$font: "Manrope", sans-serif;
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $font;
+}
+
+.topNav {
+    display: flex;
+    width: 100%;
+    height: 4rem;
+    position: absolute;
+    top: 0;
+    align-items: center;
+
+    .logo {
+        height: 100%;
+        img {
+            border-radius: 100%;
+            margin: 0.5rem 1rem;
+            height: 70%;
+        }
+    }
+
+    .linkDoc {
+        margin: 0.5rem;
+        margin-right: 1rem;
+        margin-left: auto;
+
+        button {
+            height: 2.25rem;
+            background: transparent;
+            border: 2px solid rgb(20, 47, 67);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: rgb(20, 47, 67);
+            font-family: $font;
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            cursor: pointer;
+        }
+    }
+}
+
+.dashboard {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // background-color: #29e7cd;
+    // background-image: linear-gradient(315deg, #29e7cd 0%, #fffbfc 74%);
+    background-color: #d9e4f5;
+    background-image: linear-gradient(315deg, #b5d1fc 0%, #f8d4da 74%);
+}
+
+.con {
+   
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 70%;
+    border-radius: 20px 20px 0 0;
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+    backdrop-filter: blur(2rem);
+    box-shadow: 0 0 15px rgba(63, 63, 63, 0.137);
+    animation: appear 1s ease-in-out forwards;
+    z-index: 100;
+    margin-top: 2rem;
+}
+
+.tail {
+    display: flex;
+    width: 70%;
+    height: 5%;
+
+    box-shadow: 0 0 15px rgba(63, 63, 63, 0.137);
+    border-top: 2px solid rgb(255, 255, 255);
+    background-color: white;
+    border-radius: 0 0 20px 20px;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        color: rgb(0, 0, 0);
+        margin-left: auto;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+        color: rgb(0, 0, 0);
+        margin-left: 1rem;
+        margin-right: 3.5rem;
+    }
+    opacity: 0;
+    animation: swipeDown 0.5s forwards 1s;
+}
+
+.head {
+    display: flex;
+    width: 100%;
+    height: max-content;
+    align-items: center;
+    border-bottom: 1.5px solid rgba(128, 128, 128, 0.144);
+    border-radius: 20px 20px 0 0;
+    box-sizing: border-box;
+    justify-content: center;
+
+    h1 {
+        font-size: 1.1rem;
+        color: rgb(20, 47, 67);
+        font-weight: 600;
+        margin-right: auto;
+        margin-left: 3rem;
+    }
+
+    nav {
+        margin-right: 3rem;
+        button {
+            margin: 0.5rem;
+            border: 1.5px solid rgb(231, 231, 231);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-family: $font;
+            color: rgb(122, 122, 122);
+            font-weight: 500;
+            background-color: transparent;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(128, 128, 128, 0.192);
+            }
+        }
+
+        .selected {
+            transition: all 0.7s;
+            background-color: rgb(20, 47, 67);
+            border: 1.5px solid rgb(255, 255, 255);
+            color: white;
+
+            &:hover {
+                background-color: rgb(20, 47, 67);
+            }
+
+            //background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        }
+    }
+}
+
+$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
+
+.body {
+    display: flex;
+    width: auto;
+    margin: 2rem 3rem;
+    margin-right: 0;
+    max-height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+
+    .titles {
+        display: flex;
+        width: 100%;
+        
+        ul {
+            display: grid;
+            justify-items: left;
+            width: 100%;
+            list-style: none;
+            grid-template-columns: $table_layout;
+            font-size: 0.8rem;
+            color: #924042;
+            font-weight: 500;
+            padding-left: 0;
+            padding-left: 1.25rem;
+            margin-right: 3.25rem;
+        }
+    }
+
+    .data {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+        width: 100%;
+        animation: appearOp 1s ease-in-out forwards;
+
+        &::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-color: #f5f5f5;
+            border-radius: 15px;
+        }
+
+        &::-webkit-scrollbar {
+            width: 10px;
+            background-color: #f5f5f5;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #a1a1a1;
+        }
+
+        .entry {
+            display: flex;
+            width: auto;
+            background-color: rgba(255, 255, 255, 0.712);
+            margin: 0.5rem 0;
+            margin-right: 2.5rem;
+            border-radius: 8px;
+            height: min-content;
+
+            ul {
+                display: grid;
+                justify-items: left;
+                width: 100%;
+                list-style: none;
+                grid-template-columns: $table_layout;
+                font-size: 1rem;
+                color: rgb(0, 0, 0);
+                font-weight: 500;
+                padding-left: 1.25rem;
+            }
+
+            li {
+                display: flex;
+                align-items: center;
+            }
+
+            .tokenImage {
+                height: 1.25rem;
+                object-fit: contain;
+                margin: auto 0.5rem;
+                margin-left: 0;
+            }
+
+            .na {
+                font-size: 0.8rem;
+                color: rgba(0, 0, 0, 0.521);
+            }
+
+            .price {
+                display: flex;
+                align-items: center;
+            }
+
+            .usd {
+                font-size: 0.7rem;
+                margin-bottom: 0.15rem;
+                margin-top: auto;
+                margin-left: 0.4rem;
+                color: rgb(148, 148, 148);
+            }
+        }
+    }
+}
+
+.project {
+    margin-right: 1rem;
+    line-height: 150%;
+}
+$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
+
+$mob_width: 50rem;
+
+@media screen and (max-width: 360px) {
+  *{
+      font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+    .dashboard {
+        height: auto;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .con {
+        margin-top: 6rem;
+        width: 95%;
+    }
+
+    .head {
+        margin: 2rem 0;
+        flex-direction: column;
+        h1 {
+            font-size: 0.8rem;
+            margin: 0 auto;
+        }
+        nav {
+            margin: 0.5rem 0;
+        }
+    }
+
+    .body {
+        margin: 0rem 1rem;
+
+        .titles {
+            overflow-x: auto;
+            width: 100%;
+            margin-right: 0.25rem;
+            ul {
+                min-width: $mob_width;
+                overflow-x: auto;
+                grid-template-columns: $table_layout;
+                margin-right: 0rem;
+            }
+        }
+
+        .data {
+            .entry {
+                overflow-x: auto;
+                margin-right: 0.25rem;
+                ul {
+                    min-width: $mob_width;
+                    overflow-x: auto;
+                    grid-template-columns: $table_layout;
+
+                    li {
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .tail {
+        width: 95%;
+        margin-bottom: 2rem;
+    }
+}
+
+@keyframes swipeDown {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes appear {
+    0% {
+        transform: scale(0.7);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes appearOp {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
