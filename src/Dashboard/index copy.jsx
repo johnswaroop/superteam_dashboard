@@ -4,19 +4,38 @@ import axios from 'axios'
 import './loader.css'
 
 
-const fetchDashboard = async (setData) => {
+const fetchDashboard = async (setData, setSheet1, setSheet2, sheet1, sheet2, selectedBtn) => {
 
     try {
-        let res1 = await axios.get(`https://api.steinhq.com/v1/storages/61a101d08d29ba23790846d7/Bounties Paid`);
-        if (res1) {
-            let cleanData1 = deNuller(res1.data);
-            setData(cleanData1.reverse());
+
+        if (!sheet1) {
+            let res1 = await axios.get(`https://api.steinhq.com/v1/storages/61a101d08d29ba23790846d7/Bounties Paid`);
+            if (res1) {
+                let cleanData1 = deNuller(res1.data);
+                setSheet1(cleanData1);
+                (selectedBtn == 0) && setData(cleanData1);
+            }
         }
+        else {
+            (selectedBtn == 0) && setData(sheet1);
+        }
+
+        if (!sheet2) {
+            let res2 = await axios.get(`https://api.steinhq.com/v1/storages/61a101d08d29ba23790846d7/VJ Bounties Paid`);
+            if (res2) {
+                let cleanData2 = dataCleaner(res2.data);
+                setSheet2(cleanData2);
+                (selectedBtn == 1) && setData(cleanData2);
+            }
+        }
+        else {
+            (selectedBtn == 1) && setData(sheet2);
+        }
+
     }
     catch (e) {
         console.log(e);
     }
-
 }
 
 const deNuller = (data) => {
@@ -62,39 +81,32 @@ const formatDate = (date) => {
         month = `0${month}`;
     }
 
-    if (day.length < 2) {
-        day = `0${month}`;
-    }
-
     return `${day}/${month}/${year}`
 }
 
-//btn labels
-const ALL = "All"
-const BOUNTIES = "Bounties"
-const INSTAGRANTS = "Instagrants"
-
 function Dashboard() {
 
+    const [sheet1, setSheet1] = useState(null);
+    const [sheet2, setSheet2] = useState(null);
     const [data, setData] = useState([]);
     const [list, setList] = useState(null);
     const [tokenAssets, setTokenAssets] = useState({});
     const [assetFetchCount, setAssetFetchCount] = useState(0);
-    const [selectedBtn, setSelectedBtn] = useState(ALL);
+    const [selectedBtn, setSelectedBtn] = useState(0);
 
     useEffect(() => {
-        fetchDashboard(setData);
+        fetchDashboard(setData, setSheet1, setSheet2, sheet1, sheet2, selectedBtn);
+    }, [selectedBtn])
+
+    useEffect(() => {
         fetchList(setList);
     }, [])
 
     useEffect(() => {
         if (data.length < 0) return
         if (!list) return
-        let completed = [];
         data.forEach((itx) => {
-
-            (!completed.includes(itx['Token'])) ? getTokenData(getTokenId(itx['Token'])) : setAssetFetchCount(c => c + 1);
-            completed.push(itx['Token']);
+            getTokenData(getTokenId(itx['Token']));
         })
     }, [list, data,])
 
@@ -112,19 +124,17 @@ function Dashboard() {
 
     const getTokenData = async (id) => {
         if (!list) return
-        if (tokenAssets)
-            try {
-                let res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
-                console.log('api call -->', id);
-                if (res) {
-                    setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd, id } }) })
-                    setAssetFetchCount(c => c + 1);
-                }
+        try {
+            let res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
+            if (res) {
+                setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd } }) })
+                setAssetFetchCount(c => c + 1);
+            }
 
-            }
-            catch (er) {
-                console.log(er);
-            }
+        }
+        catch (er) {
+            console.log(er);
+        }
     }
 
     const getPriceUSD = (etx, units) => {
@@ -169,17 +179,12 @@ function Dashboard() {
                 </nav>
                 <div className={styles.con}>
                     <div className={styles.head}>
-                        <h1>Community Payouts</h1>
+                        <h1>Amount Given to Community Tracking (SuperteamDAO)</h1>
                         <nav>
-                            <button onClick={() => { setSelectedBtn(ALL) }}
-                                className={(selectedBtn == ALL) ? styles.selected : null}>{ALL}
-                            </button>
-                            <button onClick={() => { setSelectedBtn(BOUNTIES) }}
-                                className={(selectedBtn == BOUNTIES) ? styles.selected : null}>{BOUNTIES}
-                            </button>
-                            <button onClick={() => { setSelectedBtn(INSTAGRANTS) }}
-                                className={(selectedBtn == INSTAGRANTS) ? styles.selected : null}>{INSTAGRANTS}
-                            </button>
+                            <button onClick={() => { setSelectedBtn(0) }}
+                                className={(selectedBtn == 0) ? styles.selected : null}>Bounties Paid</button>
+                            <button onClick={() => { setSelectedBtn(1) }}
+                                className={(selectedBtn == 1) ? styles.selected : null}>VJ Bounties Paid</button>
                         </nav>
                     </div>
                     <div className={styles.body}>
@@ -195,15 +200,8 @@ function Dashboard() {
                         </span>
                         <span className={styles.data} key={"data" + selectedBtn}>
                             {
-                                data.filter((payload) => {
-                                    if (selectedBtn == ALL) { return true }
-                                    else if (selectedBtn == BOUNTIES) {
-                                        return (payload['Type'] == 'Bounty')
-                                    }
-                                    else if (selectedBtn == INSTAGRANTS) {
-                                        return (payload['Type'] == 'Instagrant')
-                                    }
-                                }).map((etx) => {
+                                data.map((etx) => {
+                                    console.log(tokenAssets[etx['Token']].image)
                                     if (etx['1st Prize']?.length > 0 && !isNaN(parseFloat(etx['1st Prize'])))
                                         return (
                                             <span className={styles.entry}>
@@ -232,7 +230,7 @@ function Dashboard() {
                                                         : (<p className={styles.na}>n/a</p>)}
                                                     </li>
 
-
+    
                                                     <li>{(etx['Date Given']?.length > 0) ? (formatDate(etx['Date Given'])) : (<p className={styles.na}>n/a</p>)}</li>
                                                 </ul>
                                             </span>
@@ -252,6 +250,7 @@ function Dashboard() {
     }
     else {
         return (
+
             <div className={styles.dashboard}>
                 <div className="circles-loader">
                     Loading...

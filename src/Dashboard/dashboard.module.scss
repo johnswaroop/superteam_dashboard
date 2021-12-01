@@ -121,15 +121,15 @@ body {
         margin-right: 3rem;
         button {
             margin: 0.5rem;
-            border: 1.5px solid rgb(231, 231, 231);
+            border: 1.5px solid rgba(255, 255, 255, 0.322);
             border-radius: 8px;
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
             font-family: $font;
-            color: rgb(122, 122, 122);
+            color: rgb(131, 131, 131);
             font-weight: 500;
-            background-color: transparent;
             cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.726);
 
             &:hover {
                 background-color: rgba(128, 128, 128, 0.192);
@@ -151,7 +151,7 @@ body {
     }
 }
 
-$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
+$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
 
 .body {
     display: flex;
@@ -263,7 +263,6 @@ $table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
     margin-right: 1rem;
     line-height: 150%;
 }
-$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
 
 $mob_width: 50rem;
 
