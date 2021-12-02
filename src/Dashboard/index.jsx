@@ -197,7 +197,7 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
     // data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
     return (
         <div className={styles.lineGraph}>
-            <Line options={options} data={data} style={{ minHeight: "100%"}} />
+            <Line options={options} data={data}/>
         </div>
     )
 }
