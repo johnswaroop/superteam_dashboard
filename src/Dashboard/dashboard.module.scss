@@ -71,14 +71,13 @@ body {
     margin-top: 2rem;
 }
 
-.tailDash{
-  
+.tailDash {
     display: flex;
     width: 70%;
-    height: 5%; 
+    height: 5%;
     overflow: hidden;
     box-shadow: 0 0 15px rgba(63, 63, 63, 0.137);
-   // border-top: 2px solid rgb(255, 255, 255);
+    // border-top: 2px solid rgb(255, 255, 255);
     background-color: white;
     border-radius: 0 0 20px 20px;
     align-items: center;
@@ -101,7 +100,7 @@ body {
 
     &:hover {
         position: relative;
-      //  border-top: 2px solid rgba(0, 0, 0, 0.103);
+        //  border-top: 2px solid rgba(0, 0, 0, 0.103);
         &::after {
             content: "View historic data";
             display: flex;
@@ -119,7 +118,7 @@ body {
     }
 }
 
-.tailGraph{
+.tailGraph {
     @extend .tailDash;
     &:hover {
         &::after {
@@ -148,6 +147,8 @@ body {
 
     nav {
         margin-right: 3rem;
+        display: flex;
+        align-items: center;
         button {
             margin: 0.5rem;
             border: 1.5px solid rgba(255, 255, 255, 0.322);
@@ -163,6 +164,11 @@ body {
             &:hover {
                 background-color: rgba(128, 128, 128, 0.192);
             }
+        }
+
+        .stat {
+            height: 1.5rem;
+            margin: auto 0.5rem;
         }
 
         .selected {
@@ -296,18 +302,40 @@ $table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
 .lineGraph {
     display: flex;
     flex-grow: 1;
-    height: auto;
-    padding: 5rem;
-    margin: 0 auto;
+    height: max-content;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .dateLabelToggle {
+        position: absolute;
+        top: 1.25rem;
+        right: 6rem;
+        border: 1.5px solid rgba(255, 255, 255, 0.322);
+        border-radius: 50px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.6rem;
+        font-family: $font;
+        color: rgb(131, 131, 131);
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+        background-color: rgb(107,153,237);
+
+        &:hover {
+            background-color: rgba(128, 128, 128, 0.192);
+        }
+    }
+
     canvas {
         display: flex;
-        max-width: 100%;
+        max-width: 90%;
         max-height: 100%;
         //border: 1px solid rgb(255, 0, 0);
     }
     // border: 1px solid black;
 }
-
 
 $mob_width: 50rem;
 

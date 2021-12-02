@@ -15,6 +15,8 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line } from 'react-chartjs-2';
 
+const DELTA = 70; //160
+const ALPHA = 400;
 
 const fetchDashboard = async (setData) => {
 
@@ -104,7 +106,7 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
 
     const chartMap = (data) => {
         let payout = [];
-        for (let i = 0; i < data.length; i = i + 160) {
+        for (let i = ALPHA; i < data.length; i = i + DELTA) {
             payout.push(data[i])
         }
         payout.push(data[data.length - 1])
@@ -137,7 +139,7 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
 
         let usdOverTime = [];
 
-        for (let j = 0; j < tokenAssets['SOLR'].priceChart.length; j = j + 160) {
+        for (let j = ALPHA; j < tokenAssets['SOLR'].priceChart.length; j = j + DELTA) {
             usdOverTime.push(500);
         }
 
@@ -145,7 +147,7 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
 
         Object.keys(unitsum).forEach((itm) => {
             let usdCounter = 0;
-            for (let i = 0; i < tokenAssets[itm].priceChart.length; i = i + 160) {
+            for (let i = ALPHA; i < tokenAssets[itm].priceChart.length; i = i + DELTA) {
                 usdOverTime[usdCounter] = usdOverTime[usdCounter] + parseFloat(tokenAssets[itm].priceChart[i][1] * unitsum[itm].units);
                 usdCounter++;
             }
@@ -155,12 +157,13 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
         return usdOverTime;
     }
 
+    const [showDates, setShowDates] = useState(true);
 
     const data = {
         labels,
         datasets: [
             {
-                label: 'Payout ($) ',
+                label: 'Total Community Payout ($) ',
                 data: generateData(),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -178,10 +181,10 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
                 offset: '5',
                 font: {
                     weight: "bold",
-                    size : "12"
+                    size: "12"
                 },
                 formatter: function (value) {
-                    return `$${parseInt(value)}`;
+                    return (showDates ? `$${parseInt(value)}` : '');
                 },
             },
             legend: {
@@ -197,7 +200,8 @@ const LineGraph = ({ tokenAssets, tokenData }) => {
     // data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
     return (
         <div className={styles.lineGraph}>
-            <Line options={options} data={data}/>
+            <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button>
+            <Line options={options} data={data} > </Line>
         </div>
     )
 }
@@ -249,7 +253,7 @@ function Dashboard() {
             try {
                 let res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
                 // console.log('api call -->', id);
-                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=1633052292&to=1638346822`)
+                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=1633052292&to=1638447349`)
                 //  console.log('chart api call -->', id);
                 let priceChart = chart.data?.prices;
                 if (res && chart) {
@@ -317,7 +321,11 @@ function Dashboard() {
                                 </button>
                                 <button onClick={() => { setSelectedBtn(INSTAGRANTS) }}
                                     className={(selectedBtn == INSTAGRANTS) ? styles.selected : null}>{INSTAGRANTS}
-                                </button>  </> :
+                                </button>
+                                <button onClick={() => { setShowGraph(s => !s) }}>View chart
+                                </button>
+                            </>
+                                :
                                 <button onClick={() => { setShowGraph(s => !s) }}>
                                     Switch to Dashboard
                                 </button>
