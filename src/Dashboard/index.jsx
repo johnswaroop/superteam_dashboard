@@ -394,7 +394,8 @@ function Dashboard() {
                     </div>}
 
                 </div>
-                <span className={showGraph ? styles.tailGraph : styles.tailDash} onClick={() => { setShowGraph(s => !s) }}>
+                {/* onClick={() => { setShowGraph(s => !s) }} */}
+                <span className={showGraph ? styles.tailGraph : styles.tailDash} >
                     <p>Amount Earned by the Community</p>
                     <h1>{getSumTotal()}</h1>
                 </span>
