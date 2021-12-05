@@ -2,21 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './dashboard.module.scss'
 import axios from 'axios'
 import './loader.css'
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Line } from 'react-chartjs-2';
-
-const DELTA = 70; //160
-const ALPHA = 400;
+import LineGraph from '../LineGraph'
 
 const fetchDashboard = async (setData) => {
 
@@ -83,129 +69,6 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`
 }
 
-const LineGraph = ({ tokenAssets, tokenData }) => {
-
-    ChartJS.register(
-        CategoryScale,
-        LinearScale,
-        PointElement,
-        LineElement,
-        Title,
-        Tooltip,
-        Legend,
-        ChartDataLabels
-    );
-
-
-    // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-    const unixToDate = (timestamp) => {
-        let date = new Date(timestamp).toLocaleDateString("en-US")
-        return date;
-    }
-
-    const chartMap = (data) => {
-        let payout = [];
-        for (let i = ALPHA; i < data.length; i = i + DELTA) {
-            payout.push(data[i])
-        }
-        payout.push(data[data.length - 1])
-        return payout
-    }
-
-    let labels = chartMap(tokenAssets['SOLR'].priceChart.map((etx) => { return unixToDate(etx[0]) }));
-
-    const generateData = () => {
-
-        let unitsum;
-
-        Object.keys(tokenAssets).forEach((itx) => {
-            unitsum = { ...unitsum, [itx]: { units: 0 } }
-        })
-
-        tokenData.forEach((etx) => {
-            let sum = 0;
-            if (!isNaN(parseFloat(etx['1st Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['1st Prize'].replace(/,/g, '')));
-            }
-            if (!isNaN(parseFloat(etx['2nd Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['2nd Prize'].replace(/,/g, '')));
-            }
-            if (!isNaN(parseFloat(etx['3rd Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['3rd Prize'].replace(/,/g, '')));
-            }
-            unitsum[etx['Token']].units = unitsum[etx['Token']].units + sum;
-        })
-
-        let usdOverTime = [];
-
-        for (let j = ALPHA; j < tokenAssets['SOLR'].priceChart.length; j = j + DELTA) {
-            usdOverTime.push(500);
-        }
-
-        usdOverTime.push(500);
-
-        Object.keys(unitsum).forEach((itm) => {
-            let usdCounter = 0;
-            for (let i = ALPHA; i < tokenAssets[itm].priceChart.length; i = i + DELTA) {
-                usdOverTime[usdCounter] = usdOverTime[usdCounter] + parseFloat(tokenAssets[itm].priceChart[i][1] * unitsum[itm].units);
-                usdCounter++;
-            }
-            usdOverTime[usdCounter] = usdOverTime[usdCounter] + parseFloat(tokenAssets[itm].priceChart[(tokenAssets[itm].priceChart.length - 1)][1]) * unitsum[itm].units;
-        })
-
-        return usdOverTime;
-    }
-
-    const [showDates, setShowDates] = useState(true);
-
-    const data = {
-        labels,
-        datasets: [
-            {
-                label: 'Total Community Payout ($) ',
-                data: generateData(),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-        ],
-    };
-
-    const options = {
-        responsive: true,
-        plugins: {
-            datalabels: {
-                color: '#6495ED',
-                anchor: 'end',
-                align: "end",
-                offset: '5',
-                font: {
-                    weight: "bold",
-                    size: "12"
-                },
-                formatter: function (value) {
-                    return (showDates ? `$${parseInt(value)}` : '');
-                },
-            },
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: false,
-                text: 'Chart.js Line Chart',
-            },
-        },
-    };
-    // data: chartMap(tokenAssets['SOLR'].priceChart.map((etx) => { return etx[1] })),
-    // data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-    return (
-        <div className={styles.lineGraph}>
-            <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button>
-            <Line options={options} data={data} > </Line>
-        </div>
-    )
-}
-
 //btn labels
 const ALL = "All"
 const BOUNTIES = "Bounties"
@@ -219,7 +82,7 @@ function Dashboard() {
     const [assetFetchCount, setAssetFetchCount] = useState(0);
     const [selectedBtn, setSelectedBtn] = useState(ALL);
     const [showGraph, setShowGraph] = useState(false);
-
+    
     useEffect(() => {
         fetchDashboard(setData);
         fetchList(setList);
@@ -247,28 +110,50 @@ function Dashboard() {
         return id;
     }
 
-    const getTokenAssets = async (id) => {
+    const unixToDate = (timestamp) => {
+        let date = new Date(timestamp).toLocaleDateString("en-US")
+        return date;
+    }
+
+    const getTokenAssets = async (id, dateGiven) => {
         if (!list) return
         if (tokenAssets)
             try {
                 let res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
                 // console.log('api call -->', id);
-                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=1633052292&to=1638447349`)
+                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=1633698244&to=${(Math.round((new Date()).getTime() / 1000))}`)
                 //  console.log('chart api call -->', id);
                 let priceChart = chart.data?.prices;
                 if (res && chart) {
-                    setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd, id, priceChart } }) })
+                    setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd, id, priceChart} }) })
                     setAssetFetchCount(c => c + 1);
+                    console.log(res.data.symbol.toUpperCase(),priceChart?.length,unixToDate(priceChart[0][0]),priceChart[0][0]);
                 }
-
             }
             catch (er) {
                 console.log(er);
             }
     }
 
+    const totalUnitsToken = (etx) => {
+        let tSum = 0;
+        if (!isNaN(parseFloat(etx['1st Prize']))) {
+            tSum = tSum + parseFloat(etx['1st Prize'].replace(/,/g, ''));
+        }
+        if (!isNaN(parseFloat(etx['2nd Prize']))) {
+            tSum = tSum + parseFloat(etx['2nd Prize'].replace(/,/g, ''));
+        }
+        if (!isNaN(parseFloat(etx['3rd Prize']))) {
+            tSum = tSum + parseFloat(etx['3rd Prize'].replace(/,/g, ''));
+        }
+
+        return tSum;
+    }
+
+
+
     const getPriceUSD = (etx, units) => {
-        let usd = parseFloat((parseFloat(tokenAssets[etx['Token']].price) * parseFloat(units.replace(/,/g, ''))).toPrecision(2));
+        let usd = parseFloat((parseFloat(tokenAssets[etx['Token']].price) * parseFloat(units)).toPrecision(2));
         if (isNaN(usd)) return ''
         return '$' + '' + usd
     }
@@ -278,6 +163,8 @@ function Dashboard() {
         if (isNaN(usd)) return ''
         return '$' + '' + usd
     }
+
+
 
     const getSumTotal = () => {
         let sum = 500;
@@ -295,7 +182,23 @@ function Dashboard() {
         return `$ ${parseFloat(sum.toPrecision(7))}`;
     }
 
-    //console.log("assetcount--->", assetFetchCount, "data count --->", data?.length);
+    const getTotalPayoutFromChart = () => {
+        let sumC = 0;
+        data.forEach((etx) => {
+            if (!isNaN(parseFloat(etx['Current USD Value (1st Prize)']))) {
+                sumC = sumC + parseFloat(etx['Current USD Value (1st Prize)'].replace(/,/g, ''));
+            }
+            if (!isNaN(parseFloat(etx['Current USD Value (2nd Prize)']))) {
+                sumC = sumC + parseFloat(etx['Current USD Value (2nd Prize)'].replace(/,/g, ''));
+            }
+            if (!isNaN(parseFloat(etx['Current USD Value (3rd Prize)']))) {
+                sumC = sumC + parseFloat(etx['Current USD Value (3rd Prize)'].replace(/,/g, ''));
+            }
+        })
+        return sumC;
+    }
+
+    const todaysTotal = getTotalPayoutFromChart();
 
     if ((data?.length > 0) && (list?.length > 0) && (data?.length <= assetFetchCount)) {
         return (
@@ -333,14 +236,12 @@ function Dashboard() {
                         </nav>
                     </div>
 
-                    {(showGraph) ? <LineGraph tokenAssets={tokenAssets} tokenData={data} /> : <div className={styles.body}>
+                    {(showGraph) ? <LineGraph tokenAssets={tokenAssets} tokenData={data} todaysTotal = {todaysTotal} /> : <div className={styles.body}>
                         <span className={styles.titles}>
                             <ul>
                                 <li className={styles.project}>Projects</li>
                                 <li>Token</li>
-                                <li>1st Prize</li>
-                                <li>2st Prize</li>
-                                <li>3rd Prize</li>
+                                <li>Total earnings</li>
                                 <li>Date given</li>
                             </ul>
                         </span>
@@ -365,7 +266,7 @@ function Dashboard() {
                                                         alt="" />
                                                         <p className={styles.price}>{etx['Token']}  <p className={styles.usd}>{getTokenPriceUSD(etx)}</p></p>
                                                     </li>
-                                                    <li>{(etx['1st Prize']?.length > 0)
+                                                    {/* <li>{(etx['1st Prize']?.length > 0)
                                                         ? (<p className={styles.price}>{etx['1st Prize']}
                                                             <p className={styles.usd}>{getPriceUSD(etx, etx['1st Prize'])}</p></p>)
                                                         : (<p className={styles.na}>n/a</p>)}
@@ -381,8 +282,15 @@ function Dashboard() {
                                                         ? (<p className={styles.price}>{etx['3rd Prize']}
                                                             <p className={styles.usd}>{getPriceUSD(etx, etx['3rd Prize'])}</p></p>)
                                                         : (<p className={styles.na}>n/a</p>)}
+                                                    </li> */}
+                                                    <li>
+                                                        <p className={styles.price}>
+                                                            {totalUnitsToken(etx)}
+                                                            <p className={styles.usd}>
+                                                                {getPriceUSD(etx, totalUnitsToken(etx))}
+                                                            </p>
+                                                        </p>
                                                     </li>
-
 
                                                     <li>{(etx['Date Given']?.length > 0) ? (formatDate(etx['Date Given'])) : (<p className={styles.na}>n/a</p>)}</li>
                                                 </ul>
@@ -397,7 +305,7 @@ function Dashboard() {
                 {/* onClick={() => { setShowGraph(s => !s) }} */}
                 <span className={showGraph ? styles.tailGraph : styles.tailDash} >
                     <p>Amount Earned by the Community</p>
-                    <h1>{getSumTotal()}</h1>
+                    <h1>$ {todaysTotal}</h1>
                 </span>
             </section>
         )
@@ -414,3 +322,4 @@ function Dashboard() {
 }
 
 export default Dashboard
+// getSumTotal()

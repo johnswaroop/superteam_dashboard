@@ -186,7 +186,8 @@ body {
     }
 }
 
-$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
+//$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
+$table_layout: 2.5fr 1.25fr 1fr 1fr;
 
 .body {
     display: flex;
@@ -299,43 +300,6 @@ $table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
     line-height: 150%;
 }
 
-.lineGraph {
-    display: flex;
-    flex-grow: 1;
-    height: max-content;
-    margin: 1rem;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-
-    .dateLabelToggle {
-        position: absolute;
-        top: 1.25rem;
-        right: 6rem;
-        border: 1.5px solid rgba(255, 255, 255, 0.322);
-        border-radius: 50px;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.6rem;
-        font-family: $font;
-        color: rgb(131, 131, 131);
-        font-weight: 500;
-        color: white;
-        cursor: pointer;
-        background-color: rgb(107,153,237);
-
-        &:hover {
-            background-color: rgba(128, 128, 128, 0.192);
-        }
-    }
-
-    canvas {
-        display: flex;
-        max-width: 90%;
-        max-height: 100%;
-        //border: 1px solid rgb(255, 0, 0);
-    }
-    // border: 1px solid black;
-}
 
 $mob_width: 50rem;
 
