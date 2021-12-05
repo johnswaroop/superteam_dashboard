@@ -183,7 +183,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
     return (
         <div className={styles.lineGraph}>
-            <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button>
+            {/* <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button> */}
             <Line options={options} data={data} > </Line>
         </div>
     )
