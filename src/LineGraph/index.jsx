@@ -9,7 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import styles from './chart.module.scss'
-import React, { useEffect, useState, useRef,useLayoutEffect } from 'react'
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line } from 'react-chartjs-2';
 
@@ -34,6 +34,22 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         return date;
     }
 
+    let combine3prizeToOne = (itx, units) => {
+        let sum = 0;
+
+        if (!isNaN(parseFloat(itx['1st Prize']))) {
+            sum = parseFloat(parseFloat(sum) + parseFloat(itx['1st Prize'].replace(/,/g, '')));
+        }
+        if (!isNaN(parseFloat(itx['2nd Prize']))) {
+            sum = parseFloat(parseFloat(sum) + parseFloat(itx['2nd Prize'].replace(/,/g, '')));
+        }
+        if (!isNaN(parseFloat(itx['3rd Prize']))) {
+            sum = parseFloat(parseFloat(sum) + parseFloat(itx['3rd Prize'].replace(/,/g, '')));
+        }
+        units = units + sum;
+        return units;
+    }
+
     const chartMap = (data) => {
         let payout = [];
         for (let i = ALPHA; i < data.length; i = i + DELTA) {
@@ -52,19 +68,11 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
             unitsum = { ...unitsum, [itx]: { units: 0 } }
         })
 
-        tokenData.forEach((etx) => {
-            let sum = 0;
-            if (!isNaN(parseFloat(etx['1st Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['1st Prize'].replace(/,/g, '')));
-            }
-            if (!isNaN(parseFloat(etx['2nd Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['2nd Prize'].replace(/,/g, '')));
-            }
-            if (!isNaN(parseFloat(etx['3rd Prize']))) {
-                sum = parseFloat(parseFloat(sum) + parseFloat(etx['3rd Prize'].replace(/,/g, '')));
-            }
-            unitsum[etx['Token']].units = unitsum[etx['Token']].units + sum;
-        })
+        // tokenData.forEach((etx) => {
+        //     unitsum[etx['Token']].units = combine3prizeToOne(etx,unitsum[etx['Token']].units);
+        // })
+
+        console.log(unitsum);
 
         let usdOverTime = [];
 
@@ -74,6 +82,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
         const unitsOnDate = (itm, date) => {
             let onUnits = 0;
+
             tokenData.forEach((itx) => {
 
                 if (itx['Token'] == itm && itx['Date Given']?.length > 0) {
@@ -83,35 +92,12 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
                         if (parseInt(gDate[0]) <= parseInt(oDate[0])) {
                             if (parseInt(gDate[0]) === parseInt(oDate[0])) {
                                 if (parseInt(gDate[1]) <= parseInt(oDate[1])) {
-                                    let sum = 0;
-                                    if (!isNaN(parseFloat(itx['1st Prize']))) {
-                                        sum = parseFloat(parseFloat(sum) + parseFloat(itx['1st Prize'].replace(/,/g, '')));
-                                    }
-                                    if (!isNaN(parseFloat(itx['2nd Prize']))) {
-                                        sum = parseFloat(parseFloat(sum) + parseFloat(itx['2nd Prize'].replace(/,/g, '')));
-                                    }
-                                    if (!isNaN(parseFloat(itx['3rd Prize']))) {
-                                        sum = parseFloat(parseFloat(sum) + parseFloat(itx['3rd Prize'].replace(/,/g, '')));
-                                    }
-                                    onUnits = onUnits + sum;
-
+                                    onUnits = combine3prizeToOne(itx, onUnits)
                                 }
                             }
                             else {
-                                let sum = 0;
-                                if (!isNaN(parseFloat(itx['1st Prize']))) {
-                                    sum = parseFloat(parseFloat(sum) + parseFloat(itx['1st Prize'].replace(/,/g, '')));
-                                }
-                                if (!isNaN(parseFloat(itx['2nd Prize']))) {
-                                    sum = parseFloat(parseFloat(sum) + parseFloat(itx['2nd Prize'].replace(/,/g, '')));
-                                }
-                                if (!isNaN(parseFloat(itx['3rd Prize']))) {
-                                    sum = parseFloat(parseFloat(sum) + parseFloat(itx['3rd Prize'].replace(/,/g, '')));
-                                }
-
-                                onUnits = onUnits + sum;
+                                onUnits = combine3prizeToOne(itx, onUnits)
                             }
-
                         }
 
                     }
