@@ -4,6 +4,10 @@ import axios from 'axios'
 import './loader.css'
 import LineGraph from '../LineGraph'
 
+import ReactGA from 'react-ga';
+ReactGA.initialize('G-9BMSYLV5HD');
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const fetchDashboard = async (setData) => {
 
     try {

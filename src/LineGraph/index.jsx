@@ -84,7 +84,6 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
             let onUnits = 0;
 
             tokenData.forEach((itx) => {
-
                 if (itx['Token'] == itm && itx['Date Given']?.length > 0) {
                     let gDate = itx['Date Given'].split('/');
                     let oDate = date.split('/');
