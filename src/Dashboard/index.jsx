@@ -86,7 +86,7 @@ function Dashboard() {
     const [assetFetchCount, setAssetFetchCount] = useState(0);
     const [selectedBtn, setSelectedBtn] = useState(ALL);
     const [showGraph, setShowGraph] = useState(false);
-    
+
     useEffect(() => {
         fetchDashboard(setData);
         fetchList(setList);
@@ -119,19 +119,25 @@ function Dashboard() {
         return date;
     }
 
+    const getStartDate = () => {
+        var d = new Date();
+        d.setDate(d.getDate() - 55);
+        return d
+    }
+
     const getTokenAssets = async (id, dateGiven) => {
         if (!list) return
         if (tokenAssets)
             try {
                 let res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
                 // console.log('api call -->', id);
-                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=1633698244&to=${(Math.round((new Date()).getTime() / 1000))}`)
+                let chart = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${(Math.round(getStartDate().getTime() / 1000))}&to=${(Math.round((new Date()).getTime() / 1000))}`)
                 //  console.log('chart api call -->', id);
                 let priceChart = chart.data?.prices;
                 if (res && chart) {
-                    setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd, id, priceChart} }) })
+                    setTokenAssets((obj) => { return ({ ...obj, [res.data.symbol.toUpperCase()]: { image: res.data.image.small, price: res.data.market_data.current_price.usd, id, priceChart } }) })
                     setAssetFetchCount(c => c + 1);
-                    console.log(res.data.symbol.toUpperCase(),priceChart?.length,unixToDate(priceChart[0][0]),priceChart[0][0]);
+                    console.log(res.data.symbol.toUpperCase(), priceChart?.length, unixToDate(priceChart[0][0]), priceChart[0][0]);
                 }
             }
             catch (er) {
@@ -240,7 +246,7 @@ function Dashboard() {
                         </nav>
                     </div>
 
-                    {(showGraph) ? <LineGraph tokenAssets={tokenAssets} tokenData={data} todaysTotal = {todaysTotal} /> : <div className={styles.body}>
+                    {(showGraph) ? <LineGraph tokenAssets={tokenAssets} tokenData={data} todaysTotal={todaysTotal} /> : <div className={styles.body}>
                         <span className={styles.titles}>
                             <ul>
                                 <li className={styles.project}>Projects</li>

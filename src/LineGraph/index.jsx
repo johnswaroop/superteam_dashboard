@@ -123,9 +123,6 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
     }
 
 
-
-    const [showDates, setShowDates] = useState(true);
-
     const data = {
         labels,
         datasets: [
@@ -151,7 +148,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
                     size: "12"
                 },
                 formatter: function (value) {
-                    return (showDates ? `$${parseInt(value)}` : '');
+                    return (`$${parseInt(value)}`);
                 },
             },
             legend: {
