@@ -186,6 +186,48 @@ body {
     }
 }
 
+.dropdown {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+        .dropdownList {
+            display: block;
+        }
+    }
+
+    &List {
+        display: none;
+        position: absolute;
+        width: max-content;
+        top: 100%;
+        left: -70%;
+        background-color: rgb(255, 255, 255);
+        padding: 0 0;
+        border-radius: 8px;
+        z-index: 100;
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                font-size: 1rem;
+                margin: 0.25rem 0;
+                padding: 0.25rem 1rem;
+                color: rgb(131, 131, 131);
+                border-radius: 50px;
+
+                &:hover {
+                    background-color: rgb(247, 247, 247);
+                    cursor: pointer;
+                }
+            }
+        }
+        // display: none;
+    }
+}
+
 //$table_layout: 2.5fr 1.5fr 1fr 1fr 1fr 1fr;
 $table_layout: 2.5fr 1.25fr 1fr 1fr;
 
@@ -300,7 +342,6 @@ $table_layout: 2.5fr 1.25fr 1fr 1fr;
     line-height: 150%;
 }
 
-
 $mob_width: 50rem;
 
 @media screen and (max-width: 360px) {
@@ -319,6 +360,7 @@ $mob_width: 50rem;
     .con {
         margin-top: 6rem;
         width: 95%;
+        //  min-height: 80vh;
     }
 
     .head {
