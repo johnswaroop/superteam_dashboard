@@ -50,7 +50,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                 <ul>
                     <li></li>
                     <li>Sponsor</li>
-                    <li>No of Grants</li>
+                    <li></li>
                     <li style={{marginLeft : "1rem"}}>Total Allocation</li>
                 </ul>
             </div>
@@ -62,7 +62,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                                 <ul className={styles.data}>
                                     <li>{id + 1}</li>
                                     <li>{elm['sponsor']}</li>
-                                    <li className={styles.count}>{elm['instagrants'] + elm['bounties']}</li>
+                                    <li className={styles.count}></li>
                                     <li className={styles.price}>$ {elm.total}</li>
                                 </ul>
                                 {(expandMore.has(id)) && <div className={styles.expand}>
