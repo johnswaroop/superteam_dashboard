@@ -239,8 +239,8 @@ function Dashboard() {
                 <div className={styles.con}>
                     <div className={styles.head}>
                         <h1>{(() => {
-                            if (selectedPage == 'dashboard') return "Community Payouts"
-                            if (selectedPage == 'chart')  return "Community Payouts Graph"
+                            if (selectedPage == 'dashboard') return "Community Earnings"
+                            if (selectedPage == 'chart')  return "Community Earnings Graph"
                             if (selectedPage == 'leaderboard')  return "Sponsor Leaderboard"
                         }
                         )()}</h1>
@@ -265,7 +265,7 @@ function Dashboard() {
                                 <button>More</button>
                                 <span className={styles.dropdownList} ref={dropdown} onBlur={() => { dropdown.current.style.display = "none" }}>
                                     <ul>
-                                        <li style={(selectedPage == 'chart') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("chart") }}>Payouts Graph</li>
+                                        <li style={(selectedPage == 'chart') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("chart") }}>Earnings Graph</li>
                                         <li style={(selectedPage == 'leaderboard') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("leaderboard") }}>LeaderBoard</li>
                                     </ul>
                                 </span>

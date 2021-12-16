@@ -70,7 +70,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                                         <li>Project</li>
                                         <li>Type</li>
                                         <li>Date Given</li>
-                                        <li>allocation</li>
+                                        <li>Allocation</li>
                                     </ul>
                                     {elm['allotedTasks'].map((itm) => {
                                         return <ul>

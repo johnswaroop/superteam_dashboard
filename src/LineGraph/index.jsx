@@ -127,7 +127,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         labels,
         datasets: [
             {
-                label: 'Total Community Payout ($) ',
+                label: 'Total Community Earnings ($) ',
                 data: generateData(),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -166,7 +166,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
     return (
         <div className={styles.lineGraph}>
             {/* <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button> */}
-            <Line options={options} data={data} > </Line>
+            <Line options={options} data={data}> </Line>
         </div>
     )
 }
