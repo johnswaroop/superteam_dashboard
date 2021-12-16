@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './dashboard.module.scss'
 import axios from 'axios'
 import './loader.css'
+
 import LineGraph from '../LineGraph'
+import LeaderBoard from '../LeaderBoard'
 
 import ReactGA from 'react-ga';
 ReactGA.initialize('G-9BMSYLV5HD');
@@ -71,6 +73,15 @@ const formatDate = (date) => {
     }
 
     return `${day}/${month}/${year}`
+}
+
+function PageSwitcher({ selectedPage, tokenAssets, todaysTotal, tokenData }) {
+    if (selectedPage == "chart") {
+        return <LineGraph tokenAssets={tokenAssets} tokenData={tokenData} todaysTotal={todaysTotal} />
+    }
+    else if (selectedPage == "leaderboard") {
+        return <LeaderBoard tokenAssets={tokenAssets} tokenData={tokenData} />
+    }
 }
 
 //btn labels
@@ -210,6 +221,10 @@ function Dashboard() {
 
     const todaysTotal = getTotalPayoutFromChart();
 
+    const [selectedPage, setSelectedPage] = useState("dashboard");
+
+    const dropdown = useRef(null);
+
     if ((data?.length > 0) && (list?.length > 0) && (data?.length <= assetFetchCount)) {
         return (
             <section className={styles.dashboard}>
@@ -223,9 +238,14 @@ function Dashboard() {
                 </nav>
                 <div className={styles.con}>
                     <div className={styles.head}>
-                        <h1>Community Payouts</h1>
+                        <h1>{(() => {
+                            if (selectedPage == 'dashboard') return "Community Payouts"
+                            if (selectedPage == 'chart')  return "Community Payouts Graph"
+                            if (selectedPage == 'leaderboard')  return "Sponsor Leaderboard"
+                        }
+                        )()}</h1>
                         <nav>
-                            {(!showGraph) ? <>
+                            {(selectedPage == 'dashboard') ? <>
                                 <button onClick={() => { setSelectedBtn(ALL) }}
                                     className={(selectedBtn == ALL) ? styles.selected : null}>{ALL}
                                 </button>
@@ -235,48 +255,56 @@ function Dashboard() {
                                 <button onClick={() => { setSelectedBtn(INSTAGRANTS) }}
                                     className={(selectedBtn == INSTAGRANTS) ? styles.selected : null}>{INSTAGRANTS}
                                 </button>
-                                <button onClick={() => { setShowGraph(s => !s) }}>View chart
-                                </button>
                             </>
                                 :
-                                <button onClick={() => { setShowGraph(s => !s) }}>
+                                <button onClick={() => { setSelectedPage("dashboard") }}>
                                     Switch to Dashboard
                                 </button>
                             }
+                            <span className={styles.dropdown}>
+                                <button>More</button>
+                                <span className={styles.dropdownList} ref={dropdown} onBlur={() => { dropdown.current.style.display = "none" }}>
+                                    <ul>
+                                        <li style={(selectedPage == 'chart') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("chart") }}>Payouts Graph</li>
+                                        <li style={(selectedPage == 'leaderboard') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("leaderboard") }}>LeaderBoard</li>
+                                    </ul>
+                                </span>
+                            </span>
                         </nav>
                     </div>
 
-                    {(showGraph) ? <LineGraph tokenAssets={tokenAssets} tokenData={data} todaysTotal={todaysTotal} /> : <div className={styles.body}>
-                        <span className={styles.titles}>
-                            <ul>
-                                <li className={styles.project}>Projects</li>
-                                <li>Token</li>
-                                <li>Total earnings</li>
-                                <li>Date given</li>
-                            </ul>
-                        </span>
-                        <span className={styles.data} key={"data" + selectedBtn}>
-                            {
-                                data.filter((payload) => {
-                                    if (selectedBtn == ALL) { return true }
-                                    else if (selectedBtn == BOUNTIES) {
-                                        return (payload['Type'] == 'Bounty')
-                                    }
-                                    else if (selectedBtn == INSTAGRANTS) {
-                                        return (payload['Type'] == 'Instagrant')
-                                    }
-                                }).map((etx) => {
-                                    if (etx['1st Prize']?.length > 0 && !isNaN(parseFloat(etx['1st Prize'])))
-                                        return (
-                                            <span className={styles.entry}>
-                                                <ul>
-                                                    <li className={styles.project}>{etx['Project']}</li>
-                                                    <li><img className={styles.tokenImage}
-                                                        src={tokenAssets[etx['Token']].image}
-                                                        alt="" />
-                                                        <p className={styles.price}>{etx['Token']}  <p className={styles.usd}>{getTokenPriceUSD(etx)}</p></p>
-                                                    </li>
-                                                    {/* <li>{(etx['1st Prize']?.length > 0)
+                    {(selectedPage !== 'dashboard') ? <PageSwitcher selectedPage={selectedPage} tokenAssets={tokenAssets} tokenData={data} todaysTotal={todaysTotal} /> :
+                        <div className={styles.body}>
+                            <span className={styles.titles}>
+                                <ul>
+                                    <li className={styles.project}>Projects</li>
+                                    <li>Token</li>
+                                    <li>Total earnings</li>
+                                    <li>Date given</li>
+                                </ul>
+                            </span>
+                            <span className={styles.data} key={"data" + selectedBtn}>
+                                {
+                                    data.filter((payload) => {
+                                        if (selectedBtn == ALL) { return true }
+                                        else if (selectedBtn == BOUNTIES) {
+                                            return (payload['Type'] == 'Bounty')
+                                        }
+                                        else if (selectedBtn == INSTAGRANTS) {
+                                            return (payload['Type'] == 'Instagrant')
+                                        }
+                                    }).map((etx) => {
+                                        if (etx['1st Prize']?.length > 0 && !isNaN(parseFloat(etx['1st Prize'])))
+                                            return (
+                                                <span className={styles.entry}>
+                                                    <ul>
+                                                        <li className={styles.project}>{etx['Project']}</li>
+                                                        <li><img className={styles.tokenImage}
+                                                            src={tokenAssets[etx['Token']].image}
+                                                            alt="" />
+                                                            <p className={styles.price}>{etx['Token']}  <p className={styles.usd}>{getTokenPriceUSD(etx)}</p></p>
+                                                        </li>
+                                                        {/* <li>{(etx['1st Prize']?.length > 0)
                                                         ? (<p className={styles.price}>{etx['1st Prize']}
                                                             <p className={styles.usd}>{getPriceUSD(etx, etx['1st Prize'])}</p></p>)
                                                         : (<p className={styles.na}>n/a</p>)}
@@ -293,26 +321,25 @@ function Dashboard() {
                                                             <p className={styles.usd}>{getPriceUSD(etx, etx['3rd Prize'])}</p></p>)
                                                         : (<p className={styles.na}>n/a</p>)}
                                                     </li> */}
-                                                    <li>
-                                                        <p className={styles.price}>
-                                                            {totalUnitsToken(etx)}
-                                                            <p className={styles.usd}>
-                                                                {getPriceUSD(etx, totalUnitsToken(etx))}
+                                                        <li>
+                                                            <p className={styles.price}>
+                                                                {totalUnitsToken(etx)}
+                                                                <p className={styles.usd}>
+                                                                    {getPriceUSD(etx, totalUnitsToken(etx))}
+                                                                </p>
                                                             </p>
-                                                        </p>
-                                                    </li>
+                                                        </li>
 
-                                                    <li>{(etx['Date Given']?.length > 0) ? (formatDate(etx['Date Given'])) : (<p className={styles.na}>n/a</p>)}</li>
-                                                </ul>
-                                            </span>
-                                        )
-                                })
-                            }
-                        </span>
-                    </div>}
+                                                        <li>{(etx['Date Given']?.length > 0) ? (formatDate(etx['Date Given'])) : (<p className={styles.na}>n/a</p>)}</li>
+                                                    </ul>
+                                                </span>
+                                            )
+                                    })
+                                }
+                            </span>
+                        </div>}
 
                 </div>
-                {/* onClick={() => { setShowGraph(s => !s) }} */}
                 <span className={showGraph ? styles.tailGraph : styles.tailDash} >
                     <p>Amount Earned by the Community</p>
                     <h1>$ {todaysTotal}</h1>
