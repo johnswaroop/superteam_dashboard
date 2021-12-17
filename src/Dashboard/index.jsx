@@ -225,6 +225,19 @@ function Dashboard() {
 
     const dropdown = useRef(null);
 
+    function openLinkNewTab(link) {
+        if(!link) return
+        let a = document.createElement('a');
+        a.target = '_blank';
+        a.href = link;
+        a.click();
+    }
+    
+    function proofOfWorkExist(link){
+        if(!link) return ""
+        return styles.proofOfWork
+    }
+
     if ((data?.length > 0) && (list?.length > 0) && (data?.length <= assetFetchCount)) {
         return (
             <section className={styles.dashboard}>
@@ -240,8 +253,8 @@ function Dashboard() {
                     <div className={styles.head}>
                         <h1>{(() => {
                             if (selectedPage == 'dashboard') return "Community Earnings"
-                            if (selectedPage == 'chart')  return "Community Earnings Graph"
-                            if (selectedPage == 'leaderboard')  return "Sponsor Leaderboard"
+                            if (selectedPage == 'chart') return "Community Earnings Graph"
+                            if (selectedPage == 'leaderboard') return "Sponsor Leaderboard"
                         }
                         )()}</h1>
                         <nav>
@@ -296,7 +309,8 @@ function Dashboard() {
                                     }).map((etx) => {
                                         if (etx['1st Prize']?.length > 0 && !isNaN(parseFloat(etx['1st Prize'])))
                                             return (
-                                                <span className={styles.entry}>
+                                                <span className={styles.entry + " " + proofOfWorkExist(etx['Proof of Work'])}
+                                                    onClick={() => {openLinkNewTab(etx['Proof of Work']) }}>
                                                     <ul>
                                                         <li className={styles.project}>{etx['Project']}</li>
                                                         <li><img className={styles.tokenImage}
@@ -357,6 +371,8 @@ function Dashboard() {
         )
     }
 }
+
+
 
 export default Dashboard
 // getSumTotal()
