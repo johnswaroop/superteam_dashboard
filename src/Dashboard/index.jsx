@@ -279,7 +279,7 @@ function Dashboard() {
                                 <span className={styles.dropdownList} ref={dropdown} onBlur={() => { dropdown.current.style.display = "none" }}>
                                     <ul>
                                         <li style={(selectedPage == 'chart') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("chart") }}>Earnings Graph</li>
-                                        <li style={(selectedPage == 'leaderboard') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("leaderboard") }}>LeaderBoard</li>
+                                        <li style={(selectedPage == 'leaderboard') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("leaderboard") }}>Leaderboard</li>
                                     </ul>
                                 </span>
                             </span>

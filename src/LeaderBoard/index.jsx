@@ -51,7 +51,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                     <li></li>
                     <li>Sponsor</li>
                     <li></li>
-                    <li style={{marginLeft : "1rem"}}>Total Allocation</li>
+                    <li style={{marginLeft : "1rem"}}>Projects Funded</li>
                 </ul>
             </div>
             <div className={styles.body}>
@@ -70,7 +70,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                                         <li>Project</li>
                                         <li>Type</li>
                                         <li>Date Given</li>
-                                        <li>Allocation</li>
+                                        <li>Project Fund</li>
                                     </ul>
                                     {elm['allotedTasks'].map((itm) => {
                                         return <ul>
