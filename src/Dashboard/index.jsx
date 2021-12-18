@@ -226,15 +226,15 @@ function Dashboard() {
     const dropdown = useRef(null);
 
     function openLinkNewTab(link) {
-        if(!link) return
+        if (!link) return
         let a = document.createElement('a');
         a.target = '_blank';
         a.href = link;
         a.click();
     }
-    
-    function proofOfWorkExist(link){
-        if(!link) return ""
+
+    function proofOfWorkExist(link) {
+        if (!link) return ""
         return styles.proofOfWork
     }
 
@@ -259,30 +259,26 @@ function Dashboard() {
                         )()}</h1>
                         <nav>
                             {(selectedPage == 'dashboard') ? <>
-                                <button onClick={() => { setSelectedBtn(ALL) }}
-                                    className={(selectedBtn == ALL) ? styles.selected : null}>{ALL}
-                                </button>
-                                <button onClick={() => { setSelectedBtn(BOUNTIES) }}
-                                    className={(selectedBtn == BOUNTIES) ? styles.selected : null}>{BOUNTIES}
-                                </button>
-                                <button onClick={() => { setSelectedBtn(INSTAGRANTS) }}
-                                    className={(selectedBtn == INSTAGRANTS) ? styles.selected : null}>{INSTAGRANTS}
-                                </button>
-                            </>
-                                :
-                                <button onClick={() => { setSelectedPage("dashboard") }}>
-                                    Switch to Dashboard
-                                </button>
-                            }
-                            <span className={styles.dropdown}>
-                                <button>More</button>
-                                <span className={styles.dropdownList} ref={dropdown} onBlur={() => { dropdown.current.style.display = "none" }}>
-                                    <ul>
-                                        <li style={(selectedPage == 'chart') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("chart") }}>Earnings Graph</li>
-                                        <li style={(selectedPage == 'leaderboard') ? { color: "#000000" } : null} onClick={() => { setSelectedPage("leaderboard") }}>Leaderboard</li>
-                                    </ul>
+                                <span className={styles.dropdown}>
+                                    <span>{selectedBtn}</span>
+                                    <div className={styles.dropdownList}>
+                                        <li onClick={() => { setSelectedBtn(ALL) }}>{ALL}</li>
+                                        <li onClick={() => { setSelectedBtn(INSTAGRANTS) }}>{INSTAGRANTS}</li>
+                                        <li onClick={() => { setSelectedBtn(BOUNTIES) }}>{BOUNTIES}</li>
+                                    </div>
                                 </span>
-                            </span>
+                                <div className={styles.divider}/>
+                            </> : null
+                            }
+                            <button className={(selectedPage == 'dashboard') ? styles.selected : null}
+                                onClick={() => { setSelectedPage('dashboard') }}
+                            >Dashboard</button>
+                            <button className={(selectedPage == 'chart') ? styles.selected : null}
+                                onClick={() => { setSelectedPage('chart') }}
+                            >Earnings Graph</button>
+                            <button className={(selectedPage == 'leaderboard') ? styles.selected : null}
+                                onClick={() => { setSelectedPage('leaderboard') }}
+                            >Leaderboard</button>
                         </nav>
                     </div>
 
@@ -310,7 +306,7 @@ function Dashboard() {
                                         if (etx['1st Prize']?.length > 0 && !isNaN(parseFloat(etx['1st Prize'])))
                                             return (
                                                 <span className={styles.entry + " " + proofOfWorkExist(etx['Proof of Work'])}
-                                                    onClick={() => {openLinkNewTab(etx['Proof of Work']) }}>
+                                                    onClick={() => { openLinkNewTab(etx['Proof of Work']) }}>
                                                     <ul>
                                                         <li className={styles.project}>{etx['Project']}</li>
                                                         <li><img className={styles.tokenImage}

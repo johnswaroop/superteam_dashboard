@@ -28,10 +28,6 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                     allotedTasks.push(elx);
                 }
             })
-            // setSponsorList((listx) => {
-            //     listx['elc'] = { total: sum }
-            //     return listx;
-            // })
             tempList.push({ sponsor: elc, total: sum, instagrants, bounties, allotedTasks });
         })
         return tempList;

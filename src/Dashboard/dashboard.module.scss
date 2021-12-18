@@ -183,6 +183,16 @@ body {
 
             //background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
         }
+
+        .divider{
+            display: flex;
+            width: 0.2rem;
+            height: 1.9rem;
+            margin: 0 1rem;
+            margin-right: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.61);
+            border-radius: 100px;
+        }
     }
 }
 
@@ -196,32 +206,51 @@ body {
         }
     }
 
+    span {
+        display: flex;
+        width: 8rem;
+        border-radius: 8px;
+        padding: 0.55rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        background-color: rgba(255, 255, 255, 0.726);
+        padding-right: 0.5rem;
+        font-size: 0.9rem;
+        font-family: $font;
+        color: rgb(131, 131, 131);
+        &::after {
+            content: "▼";
+            color: rgba(128, 128, 128, 0.26);
+            font-weight: bold;
+            margin-left: auto;
+        }
+    }
+
     &List {
         display: none;
         position: absolute;
-        width: max-content;
+        width: 9.5rem;
         top: 100%;
-        left: -70%;
         background-color: rgb(255, 255, 255);
         padding: 0 0;
         border-radius: 8px;
         z-index: 100;
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
+        list-style: none;
+        margin: 0;
+        margin-top: 0.15rem;
+        overflow:hidden;
+        animation: appearOp 0.35s ease-in-out forwards;
 
-            li {
-                font-size: 1rem;
-                margin: 0.25rem 0;
-                padding: 0.25rem 1rem;
-                color: rgb(131, 131, 131);
-                border-radius: 50px;
-
-                &:hover {
-                    background-color: rgb(247, 247, 247);
-                    cursor: pointer;
-                }
+        li {
+            font-size: 1rem;
+            // margin: 0.25rem 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.25rem 0.85rem;
+            color: rgb(131, 131, 131);
+            &:hover {
+                background-color: rgb(247, 247, 247);
+                cursor: pointer;
             }
         }
         // display: none;
@@ -353,10 +382,10 @@ $table_layout: 2.5fr 1.25fr 1fr 1fr;
                     top: 0;
                     right: 0;
                     height: max-content;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                        "Open Sans", "Helvetica Neue", sans-serif;
 
                     @media screen and (max-width: 1000px) {
-                       
                         top: 0.5rem;
                         bottom: 0;
                         height: max-content;
