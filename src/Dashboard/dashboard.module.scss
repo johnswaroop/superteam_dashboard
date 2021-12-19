@@ -184,7 +184,7 @@ body {
             //background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
         }
 
-        .divider{
+        .divider {
             display: flex;
             width: 0.2rem;
             height: 1.9rem;
@@ -238,7 +238,7 @@ body {
         list-style: none;
         margin: 0;
         margin-top: 0.15rem;
-        overflow:hidden;
+        overflow: hidden;
         animation: appearOp 0.35s ease-in-out forwards;
 
         li {
@@ -408,6 +408,20 @@ $mob_width: 50rem;
 @media screen and (max-width: 360px) {
     * {
         font-size: 80%;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    nav{
+        flex-direction: column;
+    }
+
+    *{
+        font-size: 80%;
+    }
+
+    .topNav{
+        display: none;
     }
 }
 
