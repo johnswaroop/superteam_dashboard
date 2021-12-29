@@ -26,7 +26,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         Title,
         Tooltip,
         Legend,
-        ChartDataLabels
+        ChartDataLabels,
     );
 
     const unixToDate = (timestamp) => {
@@ -159,14 +159,20 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
                 text: 'Chart.js Line Chart',
             },
         },
+        scales: {
+            y: {
+              steps : 5
+            }
+          }
     };
 
+   
 
 
     return (
         <div className={styles.lineGraph}>
             {/* <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button> */}
-            <Line options={options} data={data}> </Line>
+            <Line options={options} data={data}  ></Line>
         </div>
     )
 }
