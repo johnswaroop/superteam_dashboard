@@ -60,6 +60,8 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
     let labels = chartMap(tokenAssets['SOLR'].priceChart.map((etx) => { return unixToDate(etx[0]) }));
 
+    console.log(tokenData);
+
     const generateData = () => {
 
         let unitsum;
@@ -85,21 +87,30 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
             tokenData.forEach((itx) => {
                 if (itx['Token'] == itm && itx['Date Given']?.length > 0) {
-                    let gDate = itx['Date Given'].split('/');
-                    let oDate = date.split('/');
-                    if (parseInt(gDate[2]) <= parseInt(oDate[2])) {
-                        if (parseInt(gDate[0]) <= parseInt(oDate[0])) {
-                            if (parseInt(gDate[0]) === parseInt(oDate[0])) {
-                                if (parseInt(gDate[1]) <= parseInt(oDate[1])) {
-                                    onUnits = combine3prizeToOne(itx, onUnits)
-                                }
-                            }
-                            else {
-                                onUnits = combine3prizeToOne(itx, onUnits)
-                            }
-                        }
+                    // let gDate = itx['Date Given'].split('/');
+                    // let oDate = date.split('/');
 
+                    let GDate = new Date(itx['Date Given']);
+                    let ODate = new Date(date);
+
+                    if (GDate <= ODate) {
+                        onUnits = combine3prizeToOne(itx, onUnits)
                     }
+
+
+                    // console.log(parseInt(gDate[2]),parseInt(oDate[2]),(gDate[2]) <= parseInt(oDate[2]));
+                    // if (parseInt(gDate[2]) <= parseInt(oDate[2])) {
+                    //     if (parseInt(gDate[0]) <= parseInt(oDate[0])) {
+                    //         if (parseInt(gDate[0]) === parseInt(oDate[0])) {
+                    //             if (parseInt(gDate[1]) <= parseInt(oDate[1])) {
+                    //                 onUnits = combine3prizeToOne(itx, onUnits)
+                    //             }
+                    //         }
+                    //         else {
+                    //             onUnits = combine3prizeToOne(itx, onUnits)
+                    //         }
+                    //     }
+                    // }
                 }
             })
 
@@ -112,6 +123,9 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
             let usdCounter = 0;
             for (let i = ALPHA; i < tokenAssets[itm].priceChart.length; i = i + DELTA) {
                 //usdOverTime[usdCounter] = usdOverTime[usdCounter] + parseFloat(tokenAssets[itm].priceChart[i][1] * unitsum[itm].units);
+                if ('1/2/2022' == unixToDate(tokenAssets[itm].priceChart[i][0])) {
+
+                }
                 usdOverTime[usdCounter] = usdOverTime[usdCounter] + parseFloat(tokenAssets[itm].priceChart[i][1] * parseFloat(unitsOnDate(itm, unixToDate(tokenAssets[itm].priceChart[i][0]))));
                 usdCounter++;
             }
@@ -121,6 +135,9 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         usdOverTime[usdOverTime.length - 1] = todaysTotal;
         return usdOverTime;
     }
+
+
+
 
 
     const data = {
@@ -161,12 +178,12 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         },
         scales: {
             y: {
-              steps : 5
+                steps: 5
             }
-          }
+        }
     };
 
-   
+
 
 
     return (
