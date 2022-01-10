@@ -7,14 +7,18 @@ import {
     Title,
     Tooltip,
     Legend,
+
 } from 'chart.js';
 import styles from './chart.module.scss'
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line } from 'react-chartjs-2';
+import { Filler } from "chart.js";
 
 const DELTA = 70; //160
 const ALPHA = 400;
+
+
 
 const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
@@ -27,6 +31,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         Tooltip,
         Legend,
         ChartDataLabels,
+        Filler
     );
 
     const unixToDate = (timestamp) => {
@@ -136,8 +141,18 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         return usdOverTime;
     }
 
-
-
+    const chartRef = useRef(null);
+    const [grad, setgrad] = useState(null)
+    useEffect(() => {
+        if (chartRef) {
+            const chart = chartRef.current;
+            let gradient = chart.ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, '#fcd363');
+            gradient.addColorStop(0.5, '#ec4a73');
+            gradient.addColorStop(1, '#ec4a4a');
+            setgrad(gradient);
+        }
+    }, [])
 
 
     const data = {
@@ -146,23 +161,29 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
             {
                 label: 'Total Community Earnings ($) ',
                 data: generateData(),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: grad,
+                backgroundColor: 'rgba(253, 137, 137, 0.096)',
+                tension: 0.3,
+                fill: true
             },
         ],
     };
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             datalabels: {
-                color: '#6495ED',
+                color: '#00000099',
                 anchor: 'end',
                 align: "end",
                 offset: '5',
+                backgroundColor: '#ffffff99',
+                borderRadius: 10,
                 font: {
-                    weight: "bold",
-                    size: "12"
+                    weight: 'bolder',
+                    size: "10px",
+                    spacing: '50'
                 },
                 formatter: function (value) {
                     return (`$${parseInt(value)}`);
@@ -189,7 +210,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
     return (
         <div className={styles.lineGraph}>
             {/* <button className={styles.dateLabelToggle} onClick={() => { setShowDates(s => !s) }}>Toggle Dates</button> */}
-            <Line options={options} data={data}  ></Line>
+            {<Line ref={chartRef} options={options} data={data}  ></Line>}
         </div>
     )
 }

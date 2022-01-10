@@ -9,18 +9,9 @@ $font: "Manrope", sans-serif;
     align-items: center;
     position: relative;
 
-    // @media screen and (max-width: 1500px) {
-    //     flex-grow: none;
-    //     height: 80vh;
-    //     width: 80vw;
-
-    //     canvas {
-    //         display: flex;
-    //         min-width: 90%;
-    //         min-height: 100%;
-    //         //border: 1px solid rgb(255, 0, 0);
-    //     }
-    // }
+    @media screen and (max-width: 950px) {
+        height: 80vw;
+    }
 
     .dateLabelToggle {
         position: absolute;
