@@ -147,7 +147,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         if (chartRef) {
             const chart = chartRef.current;
             let gradient = chart.ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, '#fcd363');
+            gradient.addColorStop(0, '#120077');
             gradient.addColorStop(0.5, '#ec4a73');
             gradient.addColorStop(1, '#ec4a4a');
             setgrad(gradient);
