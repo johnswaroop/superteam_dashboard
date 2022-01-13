@@ -1,0 +1,14 @@
+@media ( min-resolution: 1.10dppx) {
+  html {
+      font-size: 90%;
+  }
+}
+
+
+@media ( min-resolution: 1.25dppx) {
+  html {
+      font-size: 80%;
+  }
+}
+
+

@@ -1,5 +1,16 @@
 $font: "Manrope", sans-serif;
 
+.loading {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #d9e4f5;
+    background-image: linear-gradient(315deg, #b5d1fc 0%, #f8d4da 74%);
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -412,15 +423,15 @@ $mob_width: 50rem;
 }
 
 @media screen and (max-width: 530px) {
-    nav{
+    nav {
         flex-direction: column;
     }
 
-    *{
+    * {
         font-size: 80%;
     }
 
-    .topNav{
+    .topNav {
         display: none;
     }
 }

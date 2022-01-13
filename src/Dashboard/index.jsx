@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './dashboard.module.scss'
 import axios from 'axios'
-import './loader.css'
 
 import LineGraph from '../LineGraph'
 import LeaderBoard from '../LeaderBoard'
+import Loader from './Loader'
 
 import ReactGA from 'react-ga';
 ReactGA.initialize('G-9BMSYLV5HD');
@@ -238,6 +238,7 @@ function Dashboard() {
         return styles.proofOfWork
     }
 
+ 
     if ((data?.length > 0) && (list?.length > 0) && (data?.length <= assetFetchCount)) {
         return (
             <section className={styles.dashboard}>
@@ -267,7 +268,7 @@ function Dashboard() {
                                         <li onClick={() => { setSelectedBtn(BOUNTIES) }}>{BOUNTIES}</li>
                                     </div>
                                 </span>
-                                <div className={styles.divider}/>
+                                <div className={styles.divider} />
                             </> : null
                             }
                             <button className={(selectedPage == 'dashboard') ? styles.selected : null}
@@ -359,11 +360,9 @@ function Dashboard() {
     }
     else {
         return (
-            <div className={styles.dashboard}>
-                <div className="circles-loader">
-                    Loading...
-                </div>
-            </div>
+            <span className={styles.loading}>
+                <Loader />
+            </span>
         )
     }
 }
