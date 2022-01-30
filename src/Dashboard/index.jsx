@@ -136,7 +136,15 @@ function Dashboard() {
         return d
     }
 
-    const getTokenAssets = async (id, dateGiven) => {
+    const getTokenAssets = async (idx, dateGiven) => {
+        let id;
+
+        if (idx == 'usd-coin-avalanche-bridged-usdc-e') {
+            id = 'usd-coin';
+        }
+        else {
+            id = idx;
+        }
         if (!list) return
         if (tokenAssets)
             try {
@@ -238,7 +246,7 @@ function Dashboard() {
         return styles.proofOfWork
     }
 
- 
+
     if ((data?.length > 0) && (list?.length > 0) && (data?.length <= assetFetchCount)) {
         return (
             <section className={styles.dashboard}>
