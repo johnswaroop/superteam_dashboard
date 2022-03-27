@@ -63,9 +63,9 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         return payout
     }
 
-    let labels = chartMap(tokenAssets['SOLR'].priceChart.map((etx) => { return unixToDate(etx[0]) }));
+    let labels = chartMap(tokenAssets['SOLR'].priceChart.map((etx) => { return newDateFormat(unixToDate(etx[0])) }));
 
-    console.log(tokenData);
+    //console.log(tokenData);
 
     const generateData = () => {
 
@@ -79,7 +79,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         //     unitsum[etx['Token']].units = combine3prizeToOne(etx,unitsum[etx['Token']].units);
         // })
 
-        console.log(unitsum);
+        //console.log(unitsum);
 
         let usdOverTime = [];
 
@@ -138,6 +138,7 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
 
 
         usdOverTime[usdOverTime.length - 1] = todaysTotal;
+        //console.log(usdOverTime);
         return usdOverTime;
     }
 
@@ -214,5 +215,12 @@ const LineGraph = ({ tokenAssets, tokenData, todaysTotal }) => {
         </div>
     )
 }
+
+//DD/MM/YY format
+const newDateFormat = (date) => {
+    let split = date.split('/');
+    return `${split[1]}/${split[0]}/${split[2]}`
+}
+
 
 export default LineGraph;

@@ -349,7 +349,7 @@ function Dashboard() {
                                                             </p>
                                                         </li>
 
-                                                        <li>{(etx['Date Given']?.length > 0) ? (formatDate(etx['Date Given'])) : (<p className={styles.na}>n/a</p>)}</li>
+                                                        <li>{(etx['Date Given']?.length > 0) ? (newDateFormat(formatDate(etx['Date Given']))) : (<p className={styles.na}>n/a</p>)}</li>
                                                     </ul>
                                                 </span>
                                             )
@@ -375,7 +375,11 @@ function Dashboard() {
     }
 }
 
-
+//DD/MM/YY format
+const newDateFormat = (date) => {
+    let split = date.split('/');
+    return `${split[1]}/${split[0]}/${split[2]}`
+}
 
 export default Dashboard
 // getSumTotal()
