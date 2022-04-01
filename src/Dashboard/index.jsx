@@ -254,9 +254,9 @@ function Dashboard() {
                     <a className={styles.logo} href="https://superteam.fun/">
                         <img src="/logo.jpg" alt="" />
                     </a>
-                    <a className={styles.linkDoc} href="https://docs.google.com/spreadsheets/d/1I6EEV3RTTPTI5ugX3IWvkjx39pjSym9tk4DBeoXyGys/edit#gid=0">
+                    {/* <a className={styles.linkDoc} href="https://docs.google.com/spreadsheets/d/1I6EEV3RTTPTI5ugX3IWvkjx39pjSym9tk4DBeoXyGys/edit#gid=0">
                         <button>Original Sheet</button>
-                    </a>
+                    </a> */}
                 </nav>
                 <div className={styles.con}>
                     <div className={styles.head}>
