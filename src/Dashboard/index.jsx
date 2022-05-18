@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import LineGraph from '../LineGraph'
 import LeaderBoard from '../LeaderBoard'
+import Rainmaker from '../Rainmaker'
 import Loader from './Loader'
 
 import ReactGA from 'react-ga';
@@ -82,6 +83,10 @@ function PageSwitcher({ selectedPage, tokenAssets, todaysTotal, tokenData }) {
     else if (selectedPage == "leaderboard") {
         return <LeaderBoard tokenAssets={tokenAssets} tokenData={tokenData} />
     }
+    else if (selectedPage == "rainmaker") {
+        return <Rainmaker tokenAssets={tokenAssets} tokenData={tokenData} />
+    }
+
 }
 
 //btn labels
@@ -264,6 +269,7 @@ function Dashboard() {
                             if (selectedPage == 'dashboard') return "Community Earnings"
                             if (selectedPage == 'chart') return "Community Earnings Graph"
                             if (selectedPage == 'leaderboard') return "Sponsor Leaderboard"
+                            if (selectedPage == 'rainmaker') return "Rainmaker Leaderboard"
                         }
                         )()}</h1>
                         <nav>
@@ -287,7 +293,10 @@ function Dashboard() {
                             >Earnings Graph</button>
                             <button className={(selectedPage == 'leaderboard') ? styles.selected : null}
                                 onClick={() => { setSelectedPage('leaderboard') }}
-                            >Leaderboard</button>
+                            >Sponsor Leaderboard</button>
+                            <button className={(selectedPage == 'rainmaker') ? styles.selected : null}
+                                onClick={() => { setSelectedPage('rainmaker') }}
+                            >Rainmaker Leaderboard</button>
                         </nav>
                     </div>
 

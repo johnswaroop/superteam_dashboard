@@ -7,7 +7,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
         let sponsorSet = new Set();
 
         tokenData.forEach((ele) => {
-            ele['Sponsor'] && sponsorSet.add(ele['Sponsor']);
+            ele['Rainmaker'] && sponsorSet.add(ele['Rainmaker']);
         })
 
         let tempList = [];
@@ -18,7 +18,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
             let bounties = 0;
             let allotedTasks = [];
             tokenData.forEach((elx) => {
-                if (elx['Sponsor'] == elc) {
+                if (elx['Rainmaker'] == elc) {
                     let total_usd = elx['Total Earnings USD'];
                     total_usd = total_usd.replace(/,/g, '');
                     total_usd = total_usd.replace('$', '')
@@ -46,9 +46,9 @@ function LeaderBoard({ tokenAssets, tokenData }) {
             <div className={styles.titles}>
                 <ul>
                     <li></li>
-                    <li>Sponsor</li>
+                    <li>Rainmaker</li>
                     <li></li>
-                    <li style={{ marginLeft: "1rem" }}>Projects Funded</li>
+                    <li style={{ marginLeft: "1rem" }}>Total Amount</li>
                 </ul>
             </div>
             <div className={styles.body}>
