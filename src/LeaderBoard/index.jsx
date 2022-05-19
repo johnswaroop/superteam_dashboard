@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './leaderBoard.module.scss'
 
+function separator(numb) {
+    var str = numb.toString().split(".");
+    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return str.join(".");
+}
+
 function LeaderBoard({ tokenAssets, tokenData }) {
 
     const getSponsorList = () => {
@@ -22,7 +28,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                     let total_usd = elx['Total Earnings USD'];
                     total_usd = total_usd.replace(/,/g, '');
                     total_usd = total_usd.replace('$', '')
-                
+
                     sum = sum + parseFloat(total_usd);
                     if (elx['Type'] == 'Bounty') bounties++;
                     if (elx['Type'] == 'Instagrant') instagrants++;
@@ -60,7 +66,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                                     <li>{id + 1}</li>
                                     <li>{elm['sponsor']}</li>
                                     <li className={styles.count}></li>
-                                    <li className={styles.price}>$ {elm.total}</li>
+                                    <li className={styles.price}>$ {separator(elm.total)}</li>
                                 </ul>
                                 {(expandMore.has(id)) && <div className={styles.expand}>
                                     <ul className={styles.subTitle}>
@@ -74,7 +80,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                                             <li>{itm['Project']}</li>
                                             <li>{itm['Type']}</li>
                                             <li>{formatDate(itm['Date Given'])}</li>
-                                            <li>$ {itm['Total Earnings USD'].replace('$','')}</li>
+                                            <li>$ {separator(itm['Total Earnings USD'].replace('$', ''))}</li>
                                         </ul>
                                     })}
                                 </div>}
