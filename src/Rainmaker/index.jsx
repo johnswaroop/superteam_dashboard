@@ -35,6 +35,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
                     allotedTasks.push(elx);
                 }
             })
+            sum = sum.toFixed(0);
             tempList.push({ sponsor: elc, total: sum, instagrants, bounties, allotedTasks });
         })
         return tempList;
