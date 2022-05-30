@@ -257,7 +257,7 @@ function Dashboard() {
             <section className={styles.dashboard}>
                 <nav className={styles.topNav}>
                     <a className={styles.logo} href="https://superteam.fun/">
-                        <img src="/logo.jpg" alt="" />
+                        <img src="/logo.avif" alt="" />
                     </a>
                     {/* <a className={styles.linkDoc} href="https://docs.google.com/spreadsheets/d/1I6EEV3RTTPTI5ugX3IWvkjx39pjSym9tk4DBeoXyGys/edit#gid=0">
                         <button>Original Sheet</button>
