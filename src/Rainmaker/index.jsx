@@ -25,6 +25,7 @@ function LeaderBoard({ tokenAssets, tokenData }) {
             let allotedTasks = [];
             tokenData.forEach((elx) => {
                 if (elx['Rainmaker'] == elc) {
+                    if (!elx['Total Earnings USD']) { return null }
                     let total_usd = elx['Total Earnings USD'];
                     total_usd = total_usd.replace(/,/g, '');
                     total_usd = total_usd.replace('$', '')
