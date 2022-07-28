@@ -14,7 +14,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 const fetchDashboard = async (setData) => {
 
     try {
-        let res1 = await axios.get(`https://api.steinhq.com/v1/storages/61a101d08d29ba23790846d7/Bounties Paid`);
+        let res1 = await axios.get(`https://api.steinhq.com/v1/storages/62e2315abca21f053ea5d9c6/Bounties%20Paid`);
         if (res1) {
             let cleanData1 = deNuller(res1.data);
             setData(cleanData1.reverse());
